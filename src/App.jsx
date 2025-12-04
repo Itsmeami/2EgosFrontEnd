@@ -1,24 +1,15 @@
-import { useState } from 'react'
-import './App.css'
+import Navbar from "./Component/Layout/Navbar";
+import Home from "./Component/Home/Home"
 
 function App() {
-
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          fontSize: "40px",
-          fontWeight: "bold",
-        }}
-      >
-        Welcome to 2Egos 
-      </div>
-    </>
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <Home />
+      {/* Content area */}
+      
+    </div>
   );
 }
 
-export default App
+export default App;
