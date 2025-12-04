@@ -1,13 +1,15 @@
-import logo from "../../../public/img/logo.png";
-import cartIcon from "../../../public/img/cartIcon.png";
+// import logo from "../../../public/img/logo.png";
+// import cartIcon from "../../../public/img/cartIcon.png";
+//1
+import {Link} from "react-router-dom";
 
 function Navbar() {
   return (
     <nav className="w-full bg-white border-b shadow-sm">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         {/* Left: Logo */}
-        <div className="flex-shrink-0">
-          <img src={logo} alt="Logo" className="h-12 w-auto" />
+        <div className="shrink-0">
+          <img src="/img/logo.png" alt="Logo" className="h-12 w-auto" />
         </div>
 
         {/* Center: Menu */}
@@ -28,13 +30,21 @@ function Navbar() {
           <span className="cursor-pointer hover:text-black transition-colors">
             SEARCH
           </span>
-          <span className="cursor-pointer hover:text-black transition-colors">
+          {/* <span className="cursor-pointer hover:text-black transition-colors">
             LOGIN
-          </span>
+          </span> */}
+          {/* 2 */}
+          {/* Login redirect*/}
+          <Link
+          to="/login"
+          className="cursor-pointer hover:text-black transition-colors"
+          >
+            LOGIN
+          </Link>
 
           {/* Cart Icon */}
           <div className="flex items-center justify-center">
-            <img src={cartIcon} alt="Cart" className="h-5 w-auto" />
+            <img src="/img/cartIcon.png" alt="Cart" className="h-5 w-auto" />
           </div>
         </div>
       </div>
