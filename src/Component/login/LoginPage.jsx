@@ -1,93 +1,13 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
-// const LoginPage = () => {
-//     const navigate=useNavigate();
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
-//       <div className="bg-white text-gray-500 max-w-96 w-full mx-4 md:p-6 p-4 text-left text-sm rounded-xl shadow-[0px_0px_10px_0px] shadow-black/10">
 
-//         <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
-//           Welcome back
-//         </h2>
-
-//         <form onSubmit={(e)=>{
-//             e.preventDefault();
-//             navigate("/");
-//         }}>
-//           <input
-//             id="email"
-//             className="w-full bg-transparent border my-3 border-gray-500/30 outline-none rounded-full py-2.5 px-4"
-//             type="email"
-//             placeholder="Enter your email"
-//             required
-//           />
-
-//           <input
-//             id="password"
-//             className="w-full bg-transparent border mt-1 border-gray-500/30 outline-none rounded-full py-2.5 px-4"
-//             type="password"
-//             placeholder="Enter your password"
-//             required
-//           />
-
-//           <div className="text-right py-4">
-//             <a className="text-blue-600 underline" href="#">
-//               Forgot Password
-//             </a>
-//           </div>
-
-//           <button
-//             type="submit"
-//             className="w-full mb-3 bg-indigo-500 py-2.5 rounded-full text-white cursor-pointer"
-//           >
-//             Log in
-//           </button>
-//         </form>
-
-//         <p className="text-center mt-4">
-//           Don’t have an account?{" "}
-//           {/* <a href="#" className="text-blue-500 underline">
-//             Signup
-//           </a> */}
-//           <Link to="/signup" className="text-blue-500 underline">Signup</Link>
-//         </p>
-
-//         <button
-//           type="button"
-//           className="w-full flex items-center gap-2 justify-center mt-5 bg-black py-2.5 rounded-full text-white"
-//         >
-//           <img
-//             className="h-4 w-4"
-//             src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/appleLogo.png"
-//             alt="appleLogo"
-//           />
-//           Log in with Apple
-//         </button>
-
-//         <button
-//           type="button"
-//           className="w-full flex items-center gap-2 justify-center my-3 bg-white border border-gray-500/30 py-2.5 rounded-full text-gray-800"
-//         >
-//           <img
-//             className="h-4 w-4"
-//             src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png"
-//             alt="googleFavicon"
-//           />
-//           Log in with Google
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default LoginPage;
 
 
 
 // src/Component/login/LoginPage.jsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+const HERO_IMAGE_URL = "/public/img/logsig.png"; // update if needed
+const EYE_ICON = "/public/img/eye.png";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -96,7 +16,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
+  const handleChange = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,126 +30,186 @@ export default function LoginPage() {
         body: JSON.stringify(form),
       });
 
-      // attempt to parse JSON, but handle non-json responses
       let data;
-      try {
-        data = await res.json();
-      } catch (parseErr) {
-        const text = await res.text();
-        data = { message: text || "No response body" };
-      }
-
+      try { data = await res.json(); } catch { data = { message: await res.text() }; }
       setLoading(false);
 
       if (!res.ok) {
-        // show backend message or generic
         const msg = data?.message || data?.error || `Server returned ${res.status}`;
         setError(msg);
         console.error("Login failed:", res.status, data);
         return;
       }
 
-      // success - save token/user if present
       if (data.token) localStorage.setItem("egos_token", data.token);
       else if (data.accessToken) localStorage.setItem("egos_token", data.accessToken);
 
       if (data.user) localStorage.setItem("egos_user", JSON.stringify(data.user));
       else if (data.userData) localStorage.setItem("egos_user", JSON.stringify(data.userData));
 
-      // navigate home
       navigate("/");
     } catch (err) {
       console.error("Login error (network):", err);
       setLoading(false);
-      setError("Network error — check backend is running (see console).");
+      setError("Network error — check backend (see console).");
     }
   };
 
+  const handleOAuthLogin = (provider) => {
+    const email = window.prompt(`Enter ${provider} email to simulate OAuth:`);
+    if (!email) return;
+    localStorage.setItem("egos_token", `oauth-${provider}-${Date.now()}`);
+    localStorage.setItem("egos_user", JSON.stringify({ first_name: email.split("@")[0], email }));
+    navigate("/");
+  };
+
+  // adjusted sizes
+  const OUTER_MAX = 1000;   // smaller outer width
+  const INPUT_W = 300;      // reduced input width
+  const IMG_W = 420;
+  const IMG_H = 500;
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
-      <div className="bg-white text-gray-500 max-w-96 w-full mx-4 md:p-6 p-4 text-left text-sm rounded-xl shadow-[0px_0px_10px_0px] shadow-black/10">
-        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Welcome back</h2>
+    <div style={{
+      background: "#ffffff",
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 20,
+      boxSizing: "border-box"
+    }}>
+      <div style={{ width: "100%", maxWidth: OUTER_MAX, display: "flex", justifyContent: "center", boxSizing: "border-box" }}>
+        <div style={{
+          width: "100%",
+          background: "#F7F7FA",
+          borderRadius: 36,
+          display: "flex",
+          padding: 28,
+          boxSizing: "border-box",
+          gap: 20,
+          alignItems: "stretch",
+          flexWrap: "wrap",
+          justifyContent: "center"
+        }}>
+          {/* LEFT: form */}
+          <div style={{ flex: "0 1 46%", display: "flex", flexDirection: "column", justifyContent: "center", minWidth: 280 }}>
+            <div style={{ fontWeight: 700, fontSize: 40, lineHeight: 1 }}>
+              Welcome<br />Back
+            </div>
+            <div style={{ marginTop: 6, fontSize: 12, color: "#6B6B6B" }}>
+              Login to your <span style={{ fontWeight: 800, color: "#000" }}>2EGOS</span> account!
+            </div>
 
-        {error && <div className="mb-3 p-2 rounded bg-red-100 text-red-800">{error}</div>}
+            {error && <div style={{ marginTop: 12, padding: 8, borderRadius: 6, background: "#FFEFEF", color: "#AA2222", fontSize: 13 }}>{error}</div>}
 
-        <form onSubmit={handleSubmit}>
-          <input
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full bg-transparent border my-3 border-gray-500/30 outline-none rounded-full py-2.5 px-4"
-            type="email"
-            placeholder="Enter your email"
-            required
-          />
+            <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
+              <label style={{ display: "block", fontSize: 12, color: "#333", marginBottom: 8 }}>E-Mail</label>
+              <input
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                type="email"
+                required
+                style={{
+                  width: INPUT_W,
+                  maxWidth: "100%",
+                  height: 46,
+                  background: "#EAF6FE",
+                  borderRadius: 6,
+                  border: "1px solid #E4E4E4",
+                  padding: "10px 12px",
+                  fontSize: 14,
+                  boxSizing: "border-box",
+                }}
+              />
 
-          <div className="relative">
-            <input
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              className="w-full bg-transparent border mt-1 border-gray-500/30 outline-none rounded-full py-2.5 px-4 pr-10"
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              required
-            />
-            {/* eye button */}
-            <button
-              type="button"
-              onClick={() => setShowPassword(s => !s)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
+              <div style={{ marginTop: 12 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <label style={{ fontSize: 12, color: "#333" }}>Password</label>
+                  <button type="button"
+                    onClick={() => alert("Forgot password flow")}
+                    style={{ fontSize: 12, color: "#2563EB", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline" }}>
+                    Forgot your password?
+                  </button>
+                </div>
+
+                <div style={{ position: "relative", width: INPUT_W, maxWidth: "100%" }}>
+                  <input
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    type={showPassword ? "text" : "password"}
+                    required
+                    style={{
+                      width: "100%",
+                      height: 46,
+                      background: "#EAF6FE",
+                      borderRadius: 6,
+                      border: "1px solid #E4E4E4",
+                      padding: "10px 40px 10px 12px",
+                      fontSize: 14,
+                      boxSizing: "border-box",
+                    }}
+                  />
+                  <button type="button" onClick={() => setShowPassword(s => !s)} aria-label={showPassword ? "Hide password" : "Show password"}
+                    style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", border: "none", background: "transparent", padding: 4, cursor: "pointer" }}>
+                    <img src={EYE_ICON} alt="eye" style={{ width: 20, height: 20, display: "block" }} />
+                  </button>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 16 }}>
+                <button type="submit" disabled={loading}
+                  style={{ width: 110, height: 36, background: "#111111", color: "#fff", borderRadius: 6, border: "none", cursor: "pointer", fontSize: 14 }}>
+                  {loading ? "Logging in..." : "Login"}
+                </button>
+              </div>
+            </form>
+
+            <div style={{ marginTop: 12, fontSize: 12, color: "#666" }}>
+              Don’t have an account? <Link to="/signup" style={{ fontWeight: 700, color: "#2563EB", textDecoration: "underline" }}>Signup</Link>
+            </div>
+
+            {/* Social login (match input width) */}
+            <div style={{ marginTop: 16, width: INPUT_W, maxWidth: "100%" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                <div style={{ flex: 1, height: 1, background: "#E0E0E0" }} />
+                <div style={{ fontSize: 11, color: "#9AA4B2" }}>or login with</div>
+                <div style={{ flex: 1, height: 1, background: "#E0E0E0" }} />
+              </div>
+
+              <button onClick={() => handleOAuthLogin("Apple")}
+                style={{ width: "100%", height: 42, background: "#000", color: "#fff", borderRadius: 8, border: "none", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, cursor: "pointer" }}>
+                <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/appleLogo.png" alt="apple" style={{ width: 16, height: 16 }} />
+                Login with Apple
+              </button>
+
+              <button onClick={() => handleOAuthLogin("Google")}
+                style={{ width: "100%", height: 42, marginTop: 10, background: "#fff", color: "#111", borderRadius: 8, border: "1px solid #E4E4E4", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, cursor: "pointer" }}>
+                <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png" alt="google" style={{ width: 16, height: 16 }} />
+                Login with Google
+              </button>
+            </div>
           </div>
 
-          <div className="text-right py-4">
-            <a className="text-blue-600 underline" href="#">Forgot Password</a>
+          {/* RIGHT: image (reduced) */}
+          <div style={{ flex: "0 1 46%", display: "flex", alignItems: "center", justifyContent: "center", minWidth: 220 }}>
+            <div style={{
+              width: IMG_W,
+              height: IMG_H,
+              borderRadius: 36,
+              overflow: "hidden",
+              background: "#E8ECF8",
+              border: "4px solid #2F80FF",
+              boxSizing: "border-box",
+              maxWidth: "100%"
+            }}>
+              <img src={HERO_IMAGE_URL} alt="hero" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mb-3 bg-indigo-500 py-2.5 rounded-full text-white cursor-pointer"
-          >
-            {loading ? "Logging in..." : "Log in"}
-          </button>
-        </form>
-
-        <p className="text-center mt-4">
-          Don’t have an account? <Link to="/signup" className="text-blue-500 underline">Signup</Link>
-        </p>
-
-        <button
-          type="button"
-          onClick={() => {
-            const email = prompt("Enter Apple email to simulate OAuth:");
-            if (!email) return;
-            localStorage.setItem("egos_token", `oauth-apple-${Date.now()}`);
-            localStorage.setItem("egos_user", JSON.stringify({ first_name: email.split("@")[0], email }));
-            navigate("/");
-          }}
-          className="w-full flex items-center gap-2 justify-center mt-5 bg-black py-2.5 rounded-full text-white cursor-pointer"
-        >
-          <img className="h-4 w-4" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/appleLogo.png" alt="appleLogo" />
-          Log in with Apple
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            const email = prompt("Enter Google email to simulate OAuth:");
-            if (!email) return;
-            localStorage.setItem("egos_token", `oauth-google-${Date.now()}`);
-            localStorage.setItem("egos_user", JSON.stringify({ first_name: email.split("@")[0], email }));
-            navigate("/");
-          }}
-          className="w-full flex items-center gap-2 justify-center my-3 bg-white border border-gray-500/30 py-2.5 rounded-full text-gray-800 cursor-pointer"
-        >
-          <img className="h-4 w-4" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png" alt="googleFavicon" />
-          Log in with Google
-        </button>
+        </div>
       </div>
     </div>
   );
