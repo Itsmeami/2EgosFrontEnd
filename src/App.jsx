@@ -9,6 +9,12 @@ import SignupPage from "./Component/login/SignupPage";
 import Products from "./Component/Cart/ProductList";
 import Footer from "./Component/Layout/Footer";
 import { Routes, Route, useLocation } from "react-router-dom";
+import ForgotReset from "./Component/login/ForgotReset.jsx";
+import ForgotVerify from "./Component/login/ForgotVerify.jsx";
+import ForgotPassword from "./Component/login/ForgotPassword.jsx";
+
+import AuthSuccess from "./pages/AuthSuccess.jsx";
+
 
 function App() {
   const location = useLocation();
@@ -30,6 +36,12 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot" element={<ForgotPassword />} />
+        <Route path="/forgot/verify" element={<ForgotVerify/>} />
+        <Route path="/forgot/reset" element={<ForgotReset />} />
+         <Route path="/auth/success" element={<AuthSuccess/>} />
+         
+
       </Routes>
 
       <Footer />

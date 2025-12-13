@@ -216,11 +216,574 @@
 // // }
 
 
+//updated
+// import React, { useState } from "react";
+// import { Link, useNavigate } from "react-router-dom";
 
+// const HERO_IMAGE_URL = "/public/img/logsig.png"; // change if needed
+// const EYE_ICON = "/public/img/eye.png";
+
+// export default function LoginPage() {
+//   const navigate = useNavigate();
+//   const [form, setForm] = useState({ email: "", password: "" });
+//   const [loading, setLoading] = useState(false);
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [error, setError] = useState("");
+
+//   const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
+
+//   const onSubmit = async (e) => {
+//     e.preventDefault();
+//     setError("");
+//     setLoading(true);
+//     try {
+//       // keep your existing login workflow here
+//       const res = await fetch("http://localhost:5000/api/auth/login", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ email: form.email, password: form.password }),
+//       });
+//       const data = await res.json();
+//       setLoading(false);
+//       if (!res.ok) {
+//         setError(data?.error || data?.message || `Server: ${res.status}`);
+//         return;
+//       }
+//       if (data?.token) localStorage.setItem("egos_token", data.token);
+//       if (data?.user) localStorage.setItem("egos_user", JSON.stringify(data.user));
+//       navigate("/");
+//     } catch (err) {
+//       console.error(err);
+//       setLoading(false);
+//       setError("Network error — check console");
+//     }
+//   };
+
+//   return (
+//     <div style={page}>
+//       <div style={card}>
+//         {/* Left column - content */}
+//         <div style={leftCol}>
+//           <div style={title}>Welcome<br /><span style={titleAccent}>Back</span></div>
+//           <div style={subtitle}>Login to your <strong style={{fontWeight:800,color:"#000"}}>2EGOS</strong> account!</div>
+
+//           {error && <div style={errBox}>{error}</div>}
+
+//           <form onSubmit={onSubmit} style={{ marginTop: 18 }}>
+//             <label style={label}>E-Mail</label>
+//             <input
+//               name="email"
+//               value={form.email}
+//               onChange={handleChange}
+//               style={input}
+//               placeholder="you@domain.com"
+//               required
+//             />
+
+//             <div style={{ marginTop: 12, position: "relative" }}>
+//               <label style={label}>Password</label>
+//               <div style={{ position: "relative" }}>
+//                 <input
+//                   name="password"
+//                   value={form.password}
+//                   onChange={handleChange}
+//                   style={input}
+//                   type={showPassword ? "text" : "password"}
+//                   placeholder="Enter password"
+//                   required
+//                 />
+//                 <button
+//                   type="button"
+//                   onClick={() => setShowPassword(s => !s)}
+//                   aria-label="toggle password"
+//                   style={eyeBtn}
+//                 >
+//                   <img src={EYE_ICON} alt="eye" style={{ width: 18, height: 18 }} />
+//                 </button>
+//                 <div style={forgot}><Link to="/forgot" style={{ color: "#2F80FF", textDecoration: "none" }}>Forgot your password?</Link></div>
+//               </div>
+//             </div>
+
+//             <button type="submit" disabled={loading} style={loginBtn}>
+//               {loading ? "Logging in..." : "Login"}
+//             </button>
+//           </form>
+
+//           <div style={{ marginTop: 12, fontSize: 13, color: "#666" }}>
+//             Don't have an account? <Link to="/signup" style={{ color: "#2F80FF", fontWeight: 700 }}>Signup</Link>
+//           </div>
+
+//           <div style={{ marginTop: 18 }}>
+//             <div style={dividerRow}>
+//               <div style={line} />
+//               <div style={{ fontSize: 12, color: "#9AA4B2" }}>or login with</div>
+//               <div style={line} />
+//             </div>
+
+//             <button style={appleBtn} onClick={() => alert("Apple login flow — plug your logic")}>
+//               <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/appleLogo.png" alt="apple" style={{ width: 16, marginRight: 8 }} /> Continue with Apple
+//             </button>
+
+//             <button style={googleBtn} onClick={() => alert("Google login flow — plug your logic")}>
+//               <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png" alt="google" style={{ width: 16, marginRight: 8 }} /> Continue with Google
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Right column - image */}
+//         <div style={rightCol}>
+//           <div style={heroWrap}>
+//             <img src={HERO_IMAGE_URL} alt="hero" style={heroImg}/>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// /* ---------- Styles (JS objects) ---------- */
+// const page = {
+//   minHeight: "100vh",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   background: "#fff",
+//   padding: 20,
+//   boxSizing: "border-box"
+// };
+
+// const card = {
+//   width: "100%",
+//   maxWidth: 1100,
+//   display: "flex",
+//   gap: 28,
+//   background: "#F7F7FA",
+//   borderRadius: 28,
+//   padding: 28,
+//   boxSizing: "border-box",
+//   alignItems: "center"
+// };
+
+// const leftCol = { flex: "0 0 46%", minWidth: 320 };
+// const rightCol = { flex: "0 0 46%", display: "flex", justifyContent: "center" };
+
+// const title = { fontSize: 44, fontWeight: 800, lineHeight: 1, marginBottom: 6 };
+// const titleAccent = { display:"block" };
+// const subtitle = { color: "#6B6B6B", fontSize: 13 };
+
+// const input = {
+//   width: "100%",
+//   height: 44,
+//   background: "#EAF6FE",
+//   borderRadius: 8,
+//   border: "1px solid #E4E4E4",
+//   padding: "8px 12px",
+//   boxSizing: "border-box",
+//   marginTop: 6,
+//   fontSize: 14
+// };
+
+// const label = { fontSize: 12, color: "#333" };
+
+
+
+// const forgot = { position: "absolute", right: 0, top: -20, fontSize: 12, color: "#9AA4B2" };
+// const eyeBtn = {
+//   position: "absolute",
+//   right: 10,
+//   top: "60%",
+//   transform: "translateY(-50%)",
+//   width: 20,
+//   height: 20,
+//   cursor: "pointer",
+//   opacity: 1.0,
+  
+// };
+
+// const loginBtn = {
+//   marginTop: 18,
+//   width: 120,
+//   height: 40,
+//   background: "#111",
+//   color: "#fff",
+//   borderRadius: 8,
+//   border: "none",
+//   cursor: "pointer",
+//   fontWeight: 700
+// };
+
+// const dividerRow = { display: "flex", alignItems: "center", gap: 8, marginBottom: 10 };
+// const line = { flex: 1, height: 1, background: "#E0E0E0" };
+
+// const appleBtn = {
+//   width: "100%",
+//   height: 44,
+//   background: "#000",
+//   color: "#fff",
+//   borderRadius: 8,
+//   border: "none",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   gap: 8,
+//   cursor: "pointer",
+//   marginBottom: 8
+// };
+
+// const googleBtn = {
+//   width: "100%",
+//   height: 44,
+//   background: "#fff",
+//   color: "#111",
+//   borderRadius: 8,
+//   border: "1px solid #E4E4E4",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   gap: 8,
+//   cursor: "pointer"
+// };
+
+// const heroWrap = {
+//   width: 420,
+//   height: 520,
+//   borderRadius: 24,
+//   overflow: "hidden",
+//   background: "#E8ECF8",
+//   border: "none",
+//   outline:"none",
+//   boxshadow:"none",
+//   boxSizing: "border-box",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center"
+// };
+
+// const heroImg = { width: "100%", height: "100%", objectFit: "cover", display: "block" };
+
+// const errBox = { marginTop: 12, background: "#FFEFEF", color: "#AA2222", padding: 8, borderRadius: 6 };
+
+
+
+//toast updated
+// import React, { useState } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import { toast } from "react-toastify";
+
+// import { openOAuthPopup } from "../../utils/oauthPopup";
+
+// const HERO_IMAGE_URL = "/public/img/logsig.png";
+// const EYE_ICON = "/public/img/eye.png";
+
+// export default function LoginPage() {
+//   const navigate = useNavigate();
+//   const [form, setForm] = useState({ email: "", password: "" });
+//   const [loading, setLoading] = useState(false);
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [error, setError] = useState("");
+
+//   const handleChange = (e) =>
+//     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+
+//   const onSubmit = async (e) => {
+//     e.preventDefault();
+//     setError("");
+//     setLoading(true);
+
+//     try {
+//       const res = await fetch("http://localhost:5000/api/auth/login", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ email: form.email, password: form.password }),
+//       });
+
+//       const data = await res.json();
+//       setLoading(false);
+
+//       if (!res.ok) {
+//         const msg = data?.error || data?.message || `Server: ${res.status}`;
+//         setError(msg);
+//         toast.error(msg); // 🔥 notify
+//         return;
+//       }
+
+//       toast.success("Login successful! 🎉");
+
+//       if (data?.token) localStorage.setItem("egos_token", data.token);
+//       if (data?.user) localStorage.setItem("egos_user", JSON.stringify(data.user));
+
+//       navigate("/");
+//     } catch (err) {
+//       console.error(err);
+//       setLoading(false);
+//       setError("Network error — check console");
+//       toast.error("Network error — try again!");
+//     }
+//   };
+
+//   return (
+//     <div style={page}>
+//       <div style={card}>
+//         {/* Left column */}
+//         <div style={leftCol}>
+//           <div style={title}>
+//             Welcome<br />
+//             <span style={titleAccent}>Back</span>
+//           </div>
+//           <div style={subtitle}>
+//             Login to your <strong style={{ fontWeight: 800, color: "#000" }}>2EGOS</strong> account!
+//           </div>
+
+//           {error && <div style={errBox}>{error}</div>}
+
+//           <form onSubmit={onSubmit} style={{ marginTop: 18 }}>
+//             <label style={label}>E-Mail</label>
+//             <input
+//               name="email"
+//               value={form.email}
+//               onChange={handleChange}
+//               style={input}
+//               required
+//             />
+
+//             <div style={{ marginTop: 12, position: "relative" }}>
+//               <label style={label}>Password</label>
+
+//               <div style={{ position: "relative" }}>
+//                 <input
+//                   name="password"
+//                   value={form.password}
+//                   onChange={handleChange}
+//                   style={input}
+//                   type={showPassword ? "text" : "password"}
+//                   required
+//                 />
+
+//                 {/* EYE BUTTON */}
+//                 <button
+//                   type="button"
+//                   onClick={() => setShowPassword((s) => !s)}
+//                   aria-label="toggle password"
+//                   style={eyeBtn}
+//                 >
+//                   <img
+//                     src={EYE_ICON}
+//                     alt="eye"
+//                     style={{ width: 18, height: 18 }}
+//                   />
+//                 </button>
+
+//                 <div style={forgot}>
+//                   <Link to="/forgot" style={{ color: "#2F80FF", textDecoration: "none" }}>
+//                     Forgot your password?
+//                   </Link>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <button type="submit" disabled={loading} style={loginBtn}>
+//               {loading ? "Logging in..." : "Login"}
+//             </button>
+//           </form>
+
+//           <div style={{ marginTop: 12, fontSize: 13, color: "#666" }}>
+//             Don't have an account?{" "}
+//             <Link to="/signup" style={{ color: "#2F80FF", fontWeight: 700 }}>
+//               Signup
+//             </Link>
+//           </div>
+
+//           <div style={{ marginTop: 18 }}>
+//             <div style={dividerRow}>
+//               <div style={line} />
+//               <div style={{ fontSize: 12, color: "#9AA4B2" }}>or login with</div>
+//               <div style={line} />
+//             </div>
+
+//             <button
+//               style={appleBtn}
+//               onClick={() => toast.info("Apple login coming soon")}
+//             >
+//               <img
+//                 src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/appleLogo.png"
+//                 alt="apple"
+//                 style={{ width: 16, marginRight: 8 }}
+//               />{" "}
+//               Continue with Apple
+//             </button>
+
+//             <button
+//               style={googleBtn}
+//               onClick={() => toast.info("Google login coming soon")}
+//             >
+//               <img
+//                 src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png"
+//                 alt="google"
+//                 style={{ width: 16, marginRight: 8 }}
+//               />{" "}
+//               Continue with Google
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Right column - hero image */}
+//         <div style={rightCol}>
+//           <div style={heroWrap}>
+//             <img src={HERO_IMAGE_URL} alt="hero" style={heroImg} />
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// /* ---------- Styles ---------- */
+
+// const page = {
+//   minHeight: "100vh",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   background: "#fff",
+//   padding: 20,
+// };
+
+// const card = {
+//   width: "100%",
+//   maxWidth: 1100,
+//   display: "flex",
+//   gap: 28,
+//   background: "#F7F7FA",
+//   borderRadius: 28,
+//   padding: 28,
+//   boxSizing: "border-box",
+//   alignItems: "center",
+// };
+
+// const leftCol = { flex: "0 0 46%", minWidth: 320 };
+// const rightCol = { flex: "0 0 46%", display: "flex", justifyContent: "center" };
+
+// const title = { fontSize: 44, fontWeight: 800, lineHeight: 1, marginBottom: 6 };
+// const titleAccent = { display: "block" };
+// const subtitle = { color: "#6B6B6B", fontSize: 13 };
+
+// const input = {
+//   width: "100%",
+//   height: 44,
+//   background: "#EAF6FE",
+//   borderRadius: 8,
+//   border: "1px solid #E4E4E4",
+//   padding: "8px 12px",
+//   marginTop: 6,
+//   fontSize: 14,
+// };
+
+// const label = { fontSize: 12, color: "#333" };
+
+// const forgot = {
+//   position: "absolute",
+//   right: 0,
+//   top: -20,
+//   fontSize: 12,
+//   color: "#9AA4B2",
+// };
+
+// const eyeBtn = {
+//   position: "absolute",
+//   right: 10,
+//   top: "60%", // centered
+//   transform: "translateY(-50%)",
+//   width: 20,
+//   height: 20,
+//   cursor: "pointer",
+//   background: "transparent",
+//   border: "none",
+// };
+
+// const loginBtn = {
+//   marginTop: 18,
+//   width: 120,
+//   height: 40,
+//   background: "#111",
+//   color: "#fff",
+//   borderRadius: 8,
+//   border: "none",
+//   cursor: "pointer",
+//   fontWeight: 700,
+// };
+
+// const dividerRow = {
+//   display: "flex",
+//   alignItems: "center",
+//   gap: 8,
+//   marginBottom: 10,
+// };
+
+// const line = { flex: 1, height: 1, background: "#E0E0E0" };
+
+// const appleBtn = {
+//   width: "100%",
+//   height: 44,
+//   background: "#000",
+//   color: "#fff",
+//   borderRadius: 8,
+//   border: "none",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   gap: 8,
+//   cursor: "pointer",
+//   marginBottom: 8,
+// };
+
+// const googleBtn = {
+//   width: "100%",
+//   height: 44,
+//   background: "#fff",
+//   border: "1px solid #E4E4E4",
+//   borderRadius: 8,
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   gap: 8,
+//   cursor: "pointer",
+// };
+
+// const heroWrap = {
+//   width: 420,
+//   height: 520,
+//   borderRadius: 24,
+//   overflow: "hidden",
+//   background: "#E8ECF8",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+// };
+
+// const heroImg = {
+//   width: "100%",
+//   height: "100%",
+//   objectFit: "cover",
+// };
+
+// const errBox = {
+//   marginTop: 12,
+//   background: "#FFEFEF",
+//   color: "#AA2222",
+//   padding: 8,
+//   borderRadius: 6,
+// };
+
+
+//google updated
+// src/Component/login/LoginPage.jsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const HERO_IMAGE_URL = "/public/img/logsig.png"; // change if needed
+import { openOAuthPopup } from "../../utils/oauthPopup";
+
+const HERO_IMAGE_URL = "/public/img/logsig.png";
 const EYE_ICON = "/public/img/eye.png";
 
 export default function LoginPage() {
@@ -230,42 +793,94 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
+  const handleChange = (e) =>
+    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
     try {
-      // keep your existing login workflow here
       const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email, password: form.password }),
       });
-      const data = await res.json();
+
+      const data = await res.json().catch(() => ({}));
       setLoading(false);
+
       if (!res.ok) {
-        setError(data?.error || data?.message || `Server: ${res.status}`);
+        const msg = data?.error || data?.message || `Server: ${res.status}`;
+        setError(msg);
+        toast.error(msg);
         return;
       }
+
+      toast.success("Login successful! 🎉");
+
       if (data?.token) localStorage.setItem("egos_token", data.token);
       if (data?.user) localStorage.setItem("egos_user", JSON.stringify(data.user));
+
       navigate("/");
     } catch (err) {
       console.error(err);
       setLoading(false);
       setError("Network error — check console");
+      toast.error("Network error — try again!");
+    }
+  };
+
+  // OAuth handler using openOAuthPopup helper
+  const handleOAuth = async (provider) => {
+    const providerLower = provider.toLowerCase();
+    const oauthUrl = `http://localhost:5000/api/auth/${providerLower}?returnTo=/`;
+    toast.info(`Opening ${provider} sign-in...`);
+
+    try {
+      const payload = await openOAuthPopup(oauthUrl);
+
+      // payload expected: { token, user } (backend sends this)
+      if (!payload) {
+        toast.error(`${provider} sign-in failed (no payload).`);
+        return;
+      }
+
+      const token = payload.token || (payload.payload && payload.payload.token);
+      const user = payload.user || (payload.payload && payload.payload.user);
+
+      if (token) {
+        localStorage.setItem("egos_token", token);
+        if (user) localStorage.setItem("egos_user", JSON.stringify(user));
+        toast.success(`${provider} sign-in successful`);
+        // if payload contains returnTo, navigate there; otherwise go to /
+        const returnTo = (payload.returnTo) || "/";
+        navigate(returnTo);
+      } else {
+        toast.error(`${provider} sign-in failed (no token)`);
+      }
+    } catch (err) {
+      console.error(`${provider} OAuth error:`, err);
+      if (err?.message === "popup-blocked") toast.error("Popup blocked. Allow popups for this site.");
+      else if (err?.message === "timeout") toast.error("OAuth timed out. Try again.");
+      else if (err?.message === "popup-closed") toast.info("OAuth popup closed.");
+      else toast.error(`${provider} sign-in error — check console.`);
     }
   };
 
   return (
     <div style={page}>
       <div style={card}>
-        {/* Left column - content */}
+        {/* Left column */}
         <div style={leftCol}>
-          <div style={title}>Welcome<br /><span style={titleAccent}>Back</span></div>
-          <div style={subtitle}>Login to your <strong style={{fontWeight:800,color:"#000"}}>2EGOS</strong> account!</div>
+          <div style={title}>
+            Welcome<br />
+            <span style={titleAccent}>Back</span>
+          </div>
+          <div style={subtitle}>
+            Login to your <strong style={{ fontWeight: 800, color: "#000" }}>2EGOS</strong> account!
+          </div>
 
           {error && <div style={errBox}>{error}</div>}
 
@@ -276,12 +891,12 @@ export default function LoginPage() {
               value={form.email}
               onChange={handleChange}
               style={input}
-              placeholder="you@domain.com"
               required
             />
 
             <div style={{ marginTop: 12, position: "relative" }}>
               <label style={label}>Password</label>
+
               <div style={{ position: "relative" }}>
                 <input
                   name="password"
@@ -289,18 +904,28 @@ export default function LoginPage() {
                   onChange={handleChange}
                   style={input}
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
                   required
                 />
+
+                {/* EYE BUTTON */}
                 <button
                   type="button"
-                  onClick={() => setShowPassword(s => !s)}
+                  onClick={() => setShowPassword((s) => !s)}
                   aria-label="toggle password"
                   style={eyeBtn}
                 >
-                  <img src={EYE_ICON} alt="eye" style={{ width: 18, height: 18 }} />
+                  <img
+                    src={EYE_ICON}
+                    alt="eye"
+                    style={{ width: 18, height: 18 }}
+                  />
                 </button>
-                <div style={forgot}><Link to="/forgot" style={{ color: "#2F80FF", textDecoration: "none" }}>Forgot your password?</Link></div>
+
+                <div style={forgot}>
+                  <Link to="/forgot" style={{ color: "#2F80FF", textDecoration: "none" }}>
+                    Forgot your password?
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -310,7 +935,10 @@ export default function LoginPage() {
           </form>
 
           <div style={{ marginTop: 12, fontSize: 13, color: "#666" }}>
-            Don't have an account? <Link to="/signup" style={{ color: "#2F80FF", fontWeight: 700 }}>Signup</Link>
+            Don't have an account?{" "}
+            <Link to="/signup" style={{ color: "#2F80FF", fontWeight: 700 }}>
+              Signup
+            </Link>
           </div>
 
           <div style={{ marginTop: 18 }}>
@@ -320,20 +948,36 @@ export default function LoginPage() {
               <div style={line} />
             </div>
 
-            <button style={appleBtn} onClick={() => alert("Apple login flow — plug your logic")}>
-              <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/appleLogo.png" alt="apple" style={{ width: 16, marginRight: 8 }} /> Continue with Apple
+            <button
+              style={appleBtn}
+              onClick={() => handleOAuth("Apple")}
+            >
+              <img
+                src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/appleLogo.png"
+                alt="apple"
+                style={{ width: 16, marginRight: 8 }}
+              />{" "}
+              Continue with Apple
             </button>
 
-            <button style={googleBtn} onClick={() => alert("Google login flow — plug your logic")}>
-              <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png" alt="google" style={{ width: 16, marginRight: 8 }} /> Continue with Google
+            <button
+              style={googleBtn}
+              onClick={() => handleOAuth("Google")}
+            >
+              <img
+                src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png"
+                alt="google"
+                style={{ width: 16, marginRight: 8 }}
+              />{" "}
+              Continue with Google
             </button>
           </div>
         </div>
 
-        {/* Right column - image */}
+        {/* Right column - hero image */}
         <div style={rightCol}>
           <div style={heroWrap}>
-            <img src={HERO_IMAGE_URL} alt="hero" style={heroImg}/>
+            <img src={HERO_IMAGE_URL} alt="hero" style={heroImg} />
           </div>
         </div>
       </div>
@@ -341,7 +985,8 @@ export default function LoginPage() {
   );
 }
 
-/* ---------- Styles (JS objects) ---------- */
+/* ---------- Styles ---------- */
+
 const page = {
   minHeight: "100vh",
   display: "flex",
@@ -349,7 +994,6 @@ const page = {
   justifyContent: "center",
   background: "#fff",
   padding: 20,
-  boxSizing: "border-box"
 };
 
 const card = {
@@ -361,14 +1005,14 @@ const card = {
   borderRadius: 28,
   padding: 28,
   boxSizing: "border-box",
-  alignItems: "center"
+  alignItems: "center",
 };
 
 const leftCol = { flex: "0 0 46%", minWidth: 320 };
 const rightCol = { flex: "0 0 46%", display: "flex", justifyContent: "center" };
 
 const title = { fontSize: 44, fontWeight: 800, lineHeight: 1, marginBottom: 6 };
-const titleAccent = { display:"block" };
+const titleAccent = { display: "block" };
 const subtitle = { color: "#6B6B6B", fontSize: 13 };
 
 const input = {
@@ -378,26 +1022,30 @@ const input = {
   borderRadius: 8,
   border: "1px solid #E4E4E4",
   padding: "8px 12px",
-  boxSizing: "border-box",
   marginTop: 6,
-  fontSize: 14
+  fontSize: 14,
 };
 
 const label = { fontSize: 12, color: "#333" };
 
+const forgot = {
+  position: "absolute",
+  right: 0,
+  top: -20,
+  fontSize: 12,
+  color: "#9AA4B2",
+};
 
-
-const forgot = { position: "absolute", right: 0, top: -20, fontSize: 12, color: "#9AA4B2" };
 const eyeBtn = {
   position: "absolute",
   right: 10,
-  top: "60%",
+  top: "60%", // centered
   transform: "translateY(-50%)",
   width: 20,
   height: 20,
   cursor: "pointer",
-  opacity: 1.0,
-  
+  background: "transparent",
+  border: "none",
 };
 
 const loginBtn = {
@@ -409,10 +1057,16 @@ const loginBtn = {
   borderRadius: 8,
   border: "none",
   cursor: "pointer",
-  fontWeight: 700
+  fontWeight: 700,
 };
 
-const dividerRow = { display: "flex", alignItems: "center", gap: 8, marginBottom: 10 };
+const dividerRow = {
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+  marginBottom: 10,
+};
+
 const line = { flex: 1, height: 1, background: "#E0E0E0" };
 
 const appleBtn = {
@@ -427,21 +1081,20 @@ const appleBtn = {
   justifyContent: "center",
   gap: 8,
   cursor: "pointer",
-  marginBottom: 8
+  marginBottom: 8,
 };
 
 const googleBtn = {
   width: "100%",
   height: 44,
   background: "#fff",
-  color: "#111",
-  borderRadius: 8,
   border: "1px solid #E4E4E4",
+  borderRadius: 8,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   gap: 8,
-  cursor: "pointer"
+  cursor: "pointer",
 };
 
 const heroWrap = {
@@ -450,15 +1103,21 @@ const heroWrap = {
   borderRadius: 24,
   overflow: "hidden",
   background: "#E8ECF8",
-  border: "none",
-  outline:"none",
-  boxshadow:"none",
-  boxSizing: "border-box",
   display: "flex",
   alignItems: "center",
-  justifyContent: "center"
+  justifyContent: "center",
 };
 
-const heroImg = { width: "100%", height: "100%", objectFit: "cover", display: "block" };
+const heroImg = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+};
 
-const errBox = { marginTop: 12, background: "#FFEFEF", color: "#AA2222", padding: 8, borderRadius: 6 };
+const errBox = {
+  marginTop: 12,
+  background: "#FFEFEF",
+  color: "#AA2222",
+  padding: 8,
+  borderRadius: 6,
+};
