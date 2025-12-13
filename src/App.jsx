@@ -1,16 +1,11 @@
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
-
-// Layout
 import Navbar from "./Component/Layout/Navbar";
-import Footer from "./Component/Layout/Footer";
-
-// Pages
 import Home from "./Component/Home/Home";
 import LoginPage from "./Component/login/LoginPage";
 import SignupPage from "./Component/login/SignupPage";
-import Cart from "./Component/Cart/Cart";
 import Products from "./Component/Cart/ProductList";
+import Footer from "./Component/Layout/Footer";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 const MainLayout = ({ children }) => {
   return (
