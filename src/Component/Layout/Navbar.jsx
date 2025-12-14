@@ -1,9 +1,16 @@
 // import logo from "../../../public/img/logo.png";
 // import cartIcon from "../../../public/img/cartIcon.png";
 //1
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const goToCart = () => {
+    navigate("/cart");
+  };
+
   return (
     <nav className="w-full bg-white border-b shadow-sm">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -36,14 +43,17 @@ function Navbar() {
           {/* 2 */}
           {/* Login redirect*/}
           <Link
-          to="/login"
-          className="cursor-pointer hover:text-black transition-colors"
+            to="/login"
+            className="cursor-pointer hover:text-black transition-colors"
           >
             LOGIN
           </Link>
 
           {/* Cart Icon */}
-          <div className="flex items-center justify-center">
+          <div
+            className="flex items-center justify-center cursor-pointer"
+            onClick={goToCart}
+          >
             <img src="/img/cartIcon.png" alt="Cart" className="h-5 w-auto" />
           </div>
         </div>
