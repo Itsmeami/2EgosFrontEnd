@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import tshit from "../../../public/img/tshirt1.png";
+import placeholder from "../../../public/img/tshirt1.png";
 
 const ProductList = () => {
-  const products = [
-    { image: tshit, title: "BangDoLed T-Shirt", price: 5200 },
-    { image: tshit, title: "Dark T-Shirt", price: 5300 },
-    { image: tshit, title: "Black Stomp T-Shirt", price: 4500 },
-    { image: tshit, title: "Grey Night Wing T-Shirt", price: 4800 },
-    { image: tshit, title: "Extra Product 1", price: 4800 },
-    { image: tshit, title: "Extra Product 2", price: 4800 },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/product/get");
+        const json = await res.json();
+
+        if (json.success) {
+          setProducts(json.data);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-10">Loading products...</div>;
+  }
 
   return (
     <div className="w-full px-10 py-8">
@@ -19,29 +36,36 @@ const ProductList = () => {
         <button className="bg-red-500 text-white px-4 py-1 text-xs font-semibold">
           LATEST DROP
         </button>
-
-        {/* <button className="text-sm underline tracking-wide">DISCOVER</button> */}
       </div>
 
       {/* Product Grid */}
       <div
         className="
-        grid
-        grid-cols-1 
-        sm:grid-cols-2 
-        md:grid-cols-3 
-        lg:grid-cols-4 
-        gap-8
-      "
+          grid
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
+          lg:grid-cols-4 
+          gap-8
+        "
       >
-        {products.map((p, index) => (
-          <ProductCard
-            key={index}
-            image={p.image}
-            title={p.title}
-            price={p.price}
-          />
-        ))}
+        {products.map((p) => {
+          const imageUrl =
+            p.media && p.media.length > 0
+              ? `http://localhost:5000/${p.media[0].url}`
+              : placeholder;
+
+          const price = p.discounted_price || p.base_price;
+
+          return (
+            <ProductCard
+              key={p.id}
+              image={imageUrl}
+              title={p.title}
+              price={price}
+            />
+          );
+        })}
       </div>
 
       {/* Bottom Button */}

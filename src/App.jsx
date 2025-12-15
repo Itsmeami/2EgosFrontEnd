@@ -6,6 +6,7 @@ import SignupPage from "./Component/login/SignupPage";
 import Products from "./Component/Cart/ProductList";
 import Footer from "./Component/Layout/Footer";
 import { Routes, Route, useLocation } from "react-router-dom";
+import Cart from "./Component/Cart/Cart"
 
 const MainLayout = ({ children }) => {
   return (
